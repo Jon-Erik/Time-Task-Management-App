@@ -14,19 +14,34 @@ class TaskManager extends React.Component {
 				id: 1,
 				name: "go to bank",
 				estHrs: 1.75,
-				completed: true
+				completed: true,
+				importance: "",
+				urgency: "",
+				due: "10/12/2018",
+				deadline: true,
+				tags: ""
 			},
 			{
 				id: 2,
 				name: "win a board game",
 				estHrs: 1.66,
-				completed: false
+				completed: false,
+				importance: "",
+				urgency: "",
+				due: "10/12/2018",
+				deadline: false,
+				tags: ""
 			},
 			{
 				id: 3,
 				name: "build a rocket",
 				estHrs: 2.75,
-				completed: false
+				completed: false,
+				importance: "",
+				urgency: "",
+				due: "10/12/2018",
+				deadline: false,
+				tags: ""
 			},
 		],
 		viewMode: "entry",
@@ -61,6 +76,54 @@ class TaskManager extends React.Component {
 		}
 	}
 
+	toggleImportance = event => {
+		let taskID = event.target.id;
+		let selectedTask;
+		let taskIndex;
+		for (let i = 0; i < this.state.tasks.length; i++) {
+			if (this.state.tasks[i].id == taskID) {
+				selectedTask = this.state.tasks[i];
+				taskIndex = i;
+			}
+		}
+
+		if (selectedTask.importance === "") {
+			selectedTask.importance = "low";
+		} else if (selectedTask.importance === "low") {
+			selectedTask.importance = "high";
+		} else if (selectedTask.importance === "high") {
+			selectedTask.importance = "low";
+		}
+
+		this.setState({
+			tasks: this.state.tasks
+		});
+	}
+
+	toggleUrgency = event => {
+		let taskID = event.target.id;
+		let selectedTask;
+		let taskIndex;
+		for (let i = 0; i < this.state.tasks.length; i++) {
+			if (this.state.tasks[i].id == taskID) {
+				selectedTask = this.state.tasks[i];
+				taskIndex = i;
+			}
+		}
+
+		if (selectedTask.urgency === "") {
+			selectedTask.urgency = "low";
+		} else if (selectedTask.urgency === "low") {
+			selectedTask.urgency = "high";
+		} else if (selectedTask.urgency === "high") {
+			selectedTask.urgency = "low";
+		}
+
+		this.setState({
+			tasks: this.state.tasks
+		});
+	}
+
 	render() {
 		const {viewMode} = this.state;
 		return (
@@ -87,7 +150,11 @@ class TaskManager extends React.Component {
 				{viewMode == "entry" ? <TaskManagerList tasks={this.state.tasks}
 																								toggleEditingBool={this.toggleEditingBool}
 																								editingBool={this.state.editing}/> : null }
-				{viewMode == "manage" ? <TaskManagerManage /> : null }
+				{viewMode == "manage" ? <TaskManagerManage tasks={this.state.tasks}
+																									 toggleEditingBool={this.toggleEditingBool}
+																									 editingBool={this.state.editing}
+																									 toggleImportance={this.toggleImportance}
+																									 toggleUrgency={this.toggleUrgency}/> : null }
 				{viewMode == "tags" ? <TaskManagerTags /> : null }
 
 			</div>

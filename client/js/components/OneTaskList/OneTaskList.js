@@ -1,9 +1,12 @@
 import React from "react";
 import "./OneTaskList.css";
 import {Button, Form, FormGroup, Label, Input, FormText} from "reactstrap";
+import { Link } from "react-router-dom";
 import EditIcon from "../../../assets/images/editicon.png"
 import DeleteIcon from "../../../assets/images/deleteicon.png"
 import ArchiveIcon from "../../../assets/images/archiveicon.png"
+import SaveIcon from "../../../assets/images/saveicon.png"
+import DiscardIcon from "../../../assets/images/discardicon.png"
 
 class OneTaskList extends React.Component {
 	state = {
@@ -23,6 +26,11 @@ class OneTaskList extends React.Component {
 		}
 	}
 
+	printValue = event => {
+		let value = event.target.value;
+		//console.log(value)
+	}
+
 	render() {
 		const {modeView} = this.state;
 
@@ -37,24 +45,47 @@ class OneTaskList extends React.Component {
 						<input type="checkbox" title="Incomplete: click to toggle"/>
 					)}
 
-					{this.state.show ? (
-						<a title="Edit" 
+					{this.state.show && this.state.modeView === "read" ? (
+						<Link title="Edit"
+							 to="#" 
 							 className="list-action-button" 
 							 onClick={(event) => {this.props.toggleEditingBool(this.props.taskID); this.changeView()}}>
 							<img className="action-icon" src={EditIcon}/>
-						</a>
-					) : null}
-							
-					{this.state.show ? (
-							<a title="Delete" className="list-action-button">
-								<img className="action-icon" src={DeleteIcon}/>
-							</a>
+						</Link>
 					) : null}
 
-					{this.state.show ? (
-							<a title="Archive" className="list-action-button">
+					{this.state.show && this.state.modeView === "edit" ? (
+						<Link title="Save"
+							 to="#" 
+							 className="list-action-button" 
+							 onClick={(event) => {this.props.toggleEditingBool(this.props.taskID); this.changeView()}}>
+							<img className="action-icon" src={SaveIcon}/>
+						</Link>
+					) : null}
+
+					{this.state.show && this.state.modeView === "edit" ? (
+						<Link title="Discard changes"
+							 to="#" 
+							 className="list-action-button" 
+							 onClick={(event) => {this.props.toggleEditingBool(this.props.taskID); this.changeView()}}>
+							<img className="action-icon" src={DiscardIcon}/>
+						</Link>
+					) : null}
+							
+					{this.state.show && this.state.modeView === "read" ?  (
+							<Link title="Delete" 
+										className="list-action-button"
+										to="#">
+								<img className="action-icon" src={DeleteIcon}/>
+							</Link>
+					) : null}
+
+					{this.state.show && this.state.modeView === "read" ? (
+							<Link title="Archive" 
+										className="list-action-button"
+										to="#">
 								<img className="action-icon" src={ArchiveIcon}/>
-							</a>
+							</Link>
 					) : null}
 				</td>
 
@@ -64,7 +95,9 @@ class OneTaskList extends React.Component {
 				
 				{modeView == "edit" ? (
 					<td className="edit-mode-td">
-						<Input className="edit-mode-input" value={this.props.taskName}/>
+						<Input className="edit-mode-input" 
+									 defaultValue={this.props.taskName}
+									 onChange={this.printValue}/>
 					</td>
 				) : null}
 
@@ -74,7 +107,9 @@ class OneTaskList extends React.Component {
 
 				{modeView == "edit" ? (
 					<td className="edit-mode-td">
-						<Input className="edit-mode-input" value={this.props.taskEstHrs}/>
+						<Input className="edit-mode-input" 
+									 defaultValue={this.props.taskEstHrs}
+									 onChange={this.printValue}/>
 					</td>
 				) : null}
 			</tr>

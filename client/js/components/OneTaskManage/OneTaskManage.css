@@ -1,0 +1,32 @@
+.manage-edit-mode-td {
+	padding: 5px !important;
+}
+
+.manage-action-icon {
+	width: 18px;
+}
+
+.manage-list-action-button {
+	margin: 0 0 0 15px;
+	/*padding: 0;*/
+}
+
+.manage-list-action-button:hover {
+	opacity: 1;
+}
+
+.manage-task-action-icon {
+	height: 26px;
+}
+
+.manage-edit-mode-input {
+	padding-left: 6px;
+}
+
+.manage-name-td {
+	min-width: 125px;
+}
+
+.importanceButton {
+	width: 60px !important;
+}
