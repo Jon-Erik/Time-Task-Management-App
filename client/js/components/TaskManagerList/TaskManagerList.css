@@ -1,0 +1,19 @@
+input[type=checkbox] {
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
+}
+
+.add-task-button {
+	margin: 0;
+	margin-bottom: 0 !important;
+}
+
+.add-task-input {
+	padding: 5px !important;
+}
+
+.add-task-td {
+	width: 140px !important;
+}

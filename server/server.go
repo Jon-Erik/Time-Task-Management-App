@@ -81,3 +81,7 @@ func main() {
 }
 
 //go build server.go && ./server.exe
+
+// If the request starts with /api, then point to API stuff
+// Else If the request is a file served up in ../client/dist, then serve it
+// Else serve ../client/dist/index.html

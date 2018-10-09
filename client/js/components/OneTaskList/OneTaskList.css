@@ -1,0 +1,24 @@
+.edit-mode-td {
+	padding: 5px !important;
+}
+
+.action-icon {
+	width: 18px;
+}
+
+.list-action-button {
+	margin: 0 0 0 15px;
+	/*padding: 0;*/
+}
+
+.list-action-button:hover {
+	opacity: 1;
+}
+
+.task-action-icon {
+	height: 26px;
+}
+
+.edit-mode-input {
+	padding-left: 6px;
+}
