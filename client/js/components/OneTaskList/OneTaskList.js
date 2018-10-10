@@ -9,9 +9,14 @@ import SaveIcon from "../../../assets/images/saveicon.png"
 import DiscardIcon from "../../../assets/images/discardicon.png"
 
 class OneTaskList extends React.Component {
-	state = {
-		modeView: "read",
-		show: false
+	constructor(props) {
+		super(props)
+		this.state = {
+			modeView: "read",
+			show: false,
+			editedTaskName: props.taskName,
+			editedTaskEstHrs: props.taskEstHrs,
+		}
 	}
 
 	changeView = (event) => {
@@ -26,9 +31,12 @@ class OneTaskList extends React.Component {
 		}
 	}
 
-	printValue = event => {
-		let value = event.target.value;
-		//console.log(value)
+	handleInputChange = event => {
+		const {name, value} = event.target;
+
+		this.setState({
+			[name]: value
+		})
 	}
 
 	render() {
@@ -40,16 +48,24 @@ class OneTaskList extends React.Component {
 			>
 				<td>
 					{this.props.taskCompleted ? (
-						<input type="checkbox" title="Completed: click to toggle" defaultChecked/>		
+						<input type="checkbox" 
+									 title="Completed: click to toggle"
+									 defaultChecked
+									 id={this.props.taskID}
+									 onChange={this.props.toggleCompleted}/>		
 					) : (
-						<input type="checkbox" title="Incomplete: click to toggle"/>
+						<input type="checkbox" 
+									 title="Incomplete: click to toggle"
+									 id={this.props.taskID}
+									 onChange={this.props.toggleCompleted}/>
 					)}
 
 					{this.state.show && this.state.modeView === "read" ? (
 						<Link title="Edit"
 							 to="#" 
 							 className="list-action-button" 
-							 onClick={(event) => {this.props.toggleEditingBool(this.props.taskID); this.changeView()}}>
+							 onClick={(event) => {this.props.toggleEditingBool(this.props.taskID); 
+							 											this.changeView()}}>
 							<img className="action-icon" src={EditIcon}/>
 						</Link>
 					) : null}
@@ -58,7 +74,11 @@ class OneTaskList extends React.Component {
 						<Link title="Save"
 							 to="#" 
 							 className="list-action-button" 
-							 onClick={(event) => {this.props.toggleEditingBool(this.props.taskID); this.changeView()}}>
+							 onClick={(event) => {this.props.updateTask(this.props.taskID,
+							 																						this.state.editedTaskName,
+							 																						this.state.editedTaskEstHrs);
+							 											this.props.toggleEditingBool(this.props.taskID); 
+							 											this.changeView();}}>
 							<img className="action-icon" src={SaveIcon}/>
 						</Link>
 					) : null}
@@ -67,7 +87,8 @@ class OneTaskList extends React.Component {
 						<Link title="Discard changes"
 							 to="#" 
 							 className="list-action-button" 
-							 onClick={(event) => {this.props.toggleEditingBool(this.props.taskID); this.changeView()}}>
+							 onClick={(event) => {this.props.toggleEditingBool(this.props.taskID); 
+							 											this.changeView()}}>
 							<img className="action-icon" src={DiscardIcon}/>
 						</Link>
 					) : null}
@@ -97,7 +118,8 @@ class OneTaskList extends React.Component {
 					<td className="edit-mode-td">
 						<Input className="edit-mode-input" 
 									 defaultValue={this.props.taskName}
-									 onChange={this.printValue}/>
+									 onChange={this.handleInputChange}
+									 name="editedTaskName"/>
 					</td>
 				) : null}
 
@@ -109,7 +131,8 @@ class OneTaskList extends React.Component {
 					<td className="edit-mode-td">
 						<Input className="edit-mode-input" 
 									 defaultValue={this.props.taskEstHrs}
-									 onChange={this.printValue}/>
+									 onChange={this.handleInputChange}
+									 name="editedTaskEstHrs"/>
 					</td>
 				) : null}
 			</tr>

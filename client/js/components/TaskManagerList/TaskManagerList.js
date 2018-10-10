@@ -14,22 +14,41 @@ class TaskManagerList extends React.Component {
 				<Table hover>
 	        <tbody>
 	        	<tr>
-	        		<td className="add-task-input add-task-td"><Button className="add-task-button">+ Add Task</Button></td>
-	        		<td className="add-task-input"><Input type="text" name="newTask" placeholder="Task Name"/></td>
-	        		<td className="add-task-input"><Input type="text" name="newTask" placeholder="Est. Hours (Ex.: 1.25)"/></td>
+	        		<td className="add-task-input add-task-td">
+	        			<Button className="add-task-button"
+	        							onClick={this.props.addTask}>
+	        				+ Add Task
+	        			</Button>
+	        		</td>
+	        		<td className="add-task-input">
+	        			<Input type="text"
+	        			 			 name="newTaskName" 
+	        			 			 placeholder="Task Name"
+	        			 			 onChange={this.props.handleInputChange}/>
+	        		</td>
+	        		<td className="add-task-input">
+	        			<Input type="text" 
+	        						 name="newTaskEstHrs" 
+	        						 placeholder="Est. Hours (Ex.: 1.25)"
+	        						 onChange={this.props.handleInputChange}/>
+	        		</td>
 	        	</tr>
 
 	          {!this.props.tasks.length ? (
-	          	<td><i>No tasks to list.</i></td>
+	          	<tr>
+	          	 <td><i>No tasks to list.</i></td>
+	          	</tr>
 	          ) : (
 	          	this.props.tasks.map((task, index) =>
-	          	<OneTaskList key={index}
+	          	<OneTaskList key={task.id}
 	          							 taskID={task.id}
 	          							 taskName={task.name}
 	          							 taskEstHrs={task.estHrs}
 	          							 taskCompleted={task.completed}
 	          							 toggleEditingBool={this.props.toggleEditingBool}
-	          							 editingBool={this.props.editingBool}/>
+	          							 editingBool={this.props.editingBool}
+	          							 updateTask={this.props.updateTask}
+	          							 toggleCompleted={this.props.toggleCompleted}/>
 	          ))}
 
 	        </tbody>
