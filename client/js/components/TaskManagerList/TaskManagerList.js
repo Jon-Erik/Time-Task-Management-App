@@ -45,8 +45,8 @@ class TaskManagerList extends React.Component {
 	          							 taskName={task.name}
 	          							 taskEstHrs={task.estHrs}
 	          							 taskCompleted={task.completed}
-	          							 toggleEditingBool={this.props.toggleEditingBool}
-	          							 editingBool={this.props.editingBool}
+	          							 toggleEditing={this.props.toggleEditing}
+	          							 editedID={this.props.editedID}
 	          							 updateTask={this.props.updateTask}
 	          							 toggleCompleted={this.props.toggleCompleted}/>
 	          ))}

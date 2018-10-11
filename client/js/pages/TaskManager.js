@@ -61,7 +61,7 @@ class TaskManager extends React.Component {
 		console.log(this.state.viewMode)
 	}
 
-	toggleEditingBool = (taskID) => {
+	toggleEditing = (taskID) => {
 		if (this.state.editing === false) {
 			this.setState({
 				editing: true,
@@ -83,16 +83,16 @@ class TaskManager extends React.Component {
 		}
 
 		let newTask = {
-					id: this.state.idCounter,
-					name: this.state.newTaskName,
-					estHrs: this.state.newTaskEstHrs,
-					completed: false,
-					importance: "",
-					urgency: "",
-					due: "",
-					deadline: false,
-					tags: ""
-				}
+			id: this.state.idCounter,
+			name: this.state.newTaskName,
+			estHrs: this.state.newTaskEstHrs,
+			completed: false,
+			importance: "",
+			urgency: "",
+			due: "",
+			deadline: false,
+			tags: ""
+		}
 		
 		let existingTasks = [...this.state.tasks]
 		// console.log(existingTasks)
@@ -117,6 +117,7 @@ class TaskManager extends React.Component {
 		let taskID = event.target.id;
 		let selectedTask;
 		let taskIndex;
+		let copiedStateTasks = [...this.state.tasks]
 		for (let i = 0; i < this.state.tasks.length; i++) {
 			if (this.state.tasks[i].id == taskID) {
 				selectedTask = this.state.tasks[i];
@@ -185,7 +186,6 @@ class TaskManager extends React.Component {
 	}
 
 	updateTask = (taskID, taskName, taskEstHrs) => {
-		console.log(taskID, taskName, taskEstHrs)
 		let taskIndex;
 		let selectedTask;
 		for (let i = 0; i < this.state.tasks.length; i++) {
@@ -227,13 +227,12 @@ class TaskManager extends React.Component {
 				</ButtonGroup>
 				
 				{viewMode == "entry" ? <TaskManagerList tasks={this.state.tasks}
-																								toggleEditingBool={this.toggleEditingBool}
-																								editingBool={this.state.editing}
+																								toggleEditing={this.toggleEditing}
+																								editedID={this.state.editedID}
 																								updateTask={this.updateTask}
 																								toggleCompleted={this.toggleCompleted}
 																								handleInputChange={this.handleInputChange}
-																								addTask={this.addTask}/> : null
-																								}
+																								addTask={this.addTask}/> : null }
 				{viewMode == "manage" ? <TaskManagerManage tasks={this.state.tasks}
 																									 toggleEditingBool={this.toggleEditingBool}
 																									 editingBool={this.state.editing}
