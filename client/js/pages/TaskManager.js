@@ -7,8 +7,8 @@ import {Button, ButtonGroup} from "reactstrap";
 
 class TaskManager extends React.Component {
 	state = {
-			tasks: [
-				{
+			tasks: {
+				1: {
 					id: 1,
 					name: "go to bank",
 					estHrs: 1.75,
@@ -19,7 +19,7 @@ class TaskManager extends React.Component {
 					deadline: true,
 					tags: ""
 				},
-				{
+				2: {
 					id: 2,
 					name: "win a board game",
 					estHrs: 1.66,
@@ -30,7 +30,7 @@ class TaskManager extends React.Component {
 					deadline: false,
 					tags: ""
 				},
-				{
+				3: {
 					id: 3,
 					name: "build a rocket",
 					estHrs: 2.75,
@@ -41,9 +41,8 @@ class TaskManager extends React.Component {
 					deadline: false,
 					tags: ""
 				},
-			],
+			},
 			viewMode: "entry",
-			editing: false,
 			editedID: 0,
 			newTaskName: "",
 			newTaskEstHrs: "",
@@ -57,19 +56,15 @@ class TaskManager extends React.Component {
 		})
 	}
 
-	printName = () => {
-		console.log(this.state.viewMode)
-	}
-
 	toggleEditing = (taskID) => {
-		if (this.state.editing === false) {
+		if (this.state.editedID === 0) {
 			this.setState({
 				editing: true,
 				editedID: taskID
 			})
-		} else if (this.state.editing === true && taskID !== this.state.editedID) {
+		} else if (taskID !== this.state.editedID) {
 			alert("You may only edit one task at a time. Please save or discard your changes before proceeding.")
-		} else if (this.state.editing === true && taskID === this.state.editedID) {
+		} else if (taskID === this.state.editedID) {
 			this.setState({
 				editing: false,
 				editedID: 0
@@ -78,31 +73,37 @@ class TaskManager extends React.Component {
 	}
 
 	addTask = event => {
-		if (this.state.newTaskName === "" || this.state.newTaskEstHrs === "") {
+		event.preventDefault();
 
+		if (this.state.newTaskName === "") {
+			alert("You must enter a name.")
+		} else {
+			let newTask = {
+				id: this.state.idCounter,
+				name: this.state.newTaskName,
+				estHrs: this.state.newTaskEstHrs,
+				completed: false,
+				importance: "",
+				urgency: "",
+				due: "",
+				deadline: false,
+				tags: ""
+			}
+			
+			if (newTask.estHrs === "" || newTask.estHrs < 0) {
+				newTask.estHrs = 0;
+			}
+
+			let tasks = Object.assign({}, this.state.tasks)
+			tasks[newTask.id] = newTask
+
+			this.setState({
+				idCounter: this.state.idCounter + 1,
+				tasks: tasks,
+				newTaskName: "",
+				newTaskEstHrs: ""
+			})
 		}
-
-		let newTask = {
-			id: this.state.idCounter,
-			name: this.state.newTaskName,
-			estHrs: this.state.newTaskEstHrs,
-			completed: false,
-			importance: "",
-			urgency: "",
-			due: "",
-			deadline: false,
-			tags: ""
-		}
-		
-		let existingTasks = [...this.state.tasks]
-		// console.log(existingTasks)
-		let updatedTasks = [...this.state.tasks, newTask]
-		//console.log(updatedTasks)
-
-		this.setState({
-			idCounter: this.state.idCounter + 1,
-			tasks: updatedTasks
-		})
 	}
 
 	handleInputChange = event => {
@@ -115,91 +116,74 @@ class TaskManager extends React.Component {
 
 	toggleImportance = event => {
 		let taskID = event.target.id;
-		let selectedTask;
-		let taskIndex;
-		let copiedStateTasks = [...this.state.tasks]
-		for (let i = 0; i < this.state.tasks.length; i++) {
-			if (this.state.tasks[i].id == taskID) {
-				selectedTask = this.state.tasks[i];
-				taskIndex = i;
-			}
-		}
+		let tasks = Object.assign({}, this.state.tasks)
 
-		if (selectedTask.importance === "") {
-			selectedTask.importance = "low";
-		} else if (selectedTask.importance === "low") {
-			selectedTask.importance = "high";
-		} else if (selectedTask.importance === "high") {
-			selectedTask.importance = "low";
+		if (tasks[taskID].importance === "") {
+			tasks[taskID].importance = "low";
+		} else if (tasks[taskID].importance === "low") {
+			tasks[taskID].importance = "high";
+		} else if (tasks[taskID].importance === "high") {
+			tasks[taskID].importance = "low";
 		}
 
 		this.setState({
-			tasks: this.state.tasks
-		});
+			tasks: tasks
+		}, console.log(task[taskID]));
 	}
 
 	toggleUrgency = event => {
 		let taskID = event.target.id;
-		let selectedTask;
-		let taskIndex;
-		for (let i = 0; i < this.state.tasks.length; i++) {
-			if (this.state.tasks[i].id == taskID) {
-				selectedTask = this.state.tasks[i];
-				taskIndex = i;
-			}
-		}
+		let tasks = Object.assign({}, this.state.tasks)
 
-		if (selectedTask.urgency === "") {
-			selectedTask.urgency = "low";
-		} else if (selectedTask.urgency === "low") {
-			selectedTask.urgency = "high";
-		} else if (selectedTask.urgency === "high") {
-			selectedTask.urgency = "low";
+		if (task[taskID].urgency === "") {
+			task[taskID].urgency = "low";
+		} else if (task[taskID].urgency === "low") {
+			task[taskID].urgency = "high";
+		} else if (task[taskID].urgency === "high") {
+			task[taskID].urgency = "low";
 		}
 
 		this.setState({
-			tasks: this.state.tasks
+			tasks: tasks
 		});
 	}
 
 	toggleCompleted = event => {
-		let taskID = event.target.id;
-		let selectedTask;
-		let taskIndex;
+		let taskID = event.target.name;
+		let tasks = Object.assign({}, this.state.tasks)
 
-		for (let i = 0; i < this.state.tasks.length; i++) {
-			if (this.state.tasks[i].id == taskID) {
-				selectedTask = this.state.tasks[i];
-				taskIndex = i;
-			}
-		}
-
-		if (selectedTask.completed === true) {
-			selectedTask.completed = false;
+		if (tasks[taskID].completed === true) {
+			tasks[taskID].completed = false;
 		} else {
-			selectedTask.completed = true;
+			tasks[taskID].completed = true;
 		}
 
 		this.setState({
-			tasks: this.state.tasks
+			tasks: tasks
 		});
 	}
 
 	updateTask = (taskID, taskName, taskEstHrs) => {
-		let taskIndex;
-		let selectedTask;
-		for (let i = 0; i < this.state.tasks.length; i++) {
-			if (this.state.tasks[i].id == taskID) {
-				selectedTask = this.state.tasks[i];
-				taskIndex = i;
-			}
-		}
+		let tasks = Object.assign({}, this.state.tasks)
 
-		selectedTask.name = taskName;
-		selectedTask.estHrs = taskEstHrs;
+		tasks[taskID].name = taskName;
+		tasks[taskID].estHrs = taskEstHrs;
 
 		this.setState({
-			tasks: this.state.tasks
+			tasks: tasks
+		});
+
+		this.toggleEditing(taskID);
+	}
+
+	deleteTask = event => {
+		let taskID = event.currentTarget.name;
+		let tasks = Object.assign({}, this.state.tasks)
+
+		delete tasks[taskID];
+
+		this.setState({
+			tasks: tasks
 		});
 	}
 
@@ -209,30 +193,61 @@ class TaskManager extends React.Component {
 			<div className="container">
 				<h1>Task Manager</h1>
 				<ButtonGroup>
-					<Button color="primary"
+
+				{this.state.viewMode === "entry" ? (
+					<Button color="success"
 									onClick={this.changeView}
 									name="entry">
 						Entry
 					</Button>
-					<Button color="primary"
+				) : (
+					<Button color="info"
+									onClick={this.changeView}
+									name="entry">
+						Entry
+					</Button>
+				)}
+
+				{this.state.viewMode === "manage" ? (
+					<Button color="success"
 									onClick={this.changeView}
 									name="manage">
 						Manage
 					</Button>
-					<Button color="primary"
+				) : (
+					<Button color="info"
+									onClick={this.changeView}
+									name="manage">
+						Manage
+					</Button>
+				)}
+
+				{this.state.viewMode === "tags" ? (
+					<Button color="success"
 									onClick={this.changeView}
 									name="tags">
 						Tags
 					</Button>
+				) : (
+					<Button color="info"
+									onClick={this.changeView}
+									name="tags">
+						Tags
+					</Button>
+				)}
+					
 				</ButtonGroup>
 				
 				{viewMode == "entry" ? <TaskManagerList tasks={this.state.tasks}
 																								toggleEditing={this.toggleEditing}
 																								editedID={this.state.editedID}
 																								updateTask={this.updateTask}
+																								deleteTask={this.deleteTask}
 																								toggleCompleted={this.toggleCompleted}
 																								handleInputChange={this.handleInputChange}
-																								addTask={this.addTask}/> : null }
+																								addTask={this.addTask}
+																								newTaskName={this.state.newTaskName}
+																								newTaskEstHrs={this.state.newTaskEstHrs}/> : null }
 				{viewMode == "manage" ? <TaskManagerManage tasks={this.state.tasks}
 																									 toggleEditingBool={this.toggleEditingBool}
 																									 editingBool={this.state.editing}

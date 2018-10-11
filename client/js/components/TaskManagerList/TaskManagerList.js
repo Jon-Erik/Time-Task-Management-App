@@ -8,6 +8,7 @@ import OneTaskList from "../OneTaskList"
 class TaskManagerList extends React.Component {
 
 	render() {
+		const {tasks, editedID, updateTask, toggleCompleted, toggleEditing, deleteTask} = this.props;
 		return (
 			<div>
 			<br />
@@ -21,35 +22,45 @@ class TaskManagerList extends React.Component {
 	        			</Button>
 	        		</td>
 	        		<td className="add-task-input">
-	        			<Input type="text"
-	        			 			 name="newTaskName" 
-	        			 			 placeholder="Task Name"
-	        			 			 onChange={this.props.handleInputChange}/>
+	        			<form onSubmit={this.props.addTask}>
+		        			<Input type="text"
+		        			 			 name="newTaskName" 
+		        			 			 placeholder="Task Name"
+		        			 			 value={this.props.newTaskName}
+		        			 			 onChange={this.props.handleInputChange}/>
+	        			</form>
 	        		</td>
 	        		<td className="add-task-input">
-	        			<Input type="text" 
-	        						 name="newTaskEstHrs" 
-	        						 placeholder="Est. Hours (Ex.: 1.25)"
-	        						 onChange={this.props.handleInputChange}/>
+		        		<form onSubmit={this.props.addTask}>
+		        			<Input type="number"
+		        						 min="0" 
+		        						 name="newTaskEstHrs" 
+		        						 placeholder="Est. Hours (Ex.: 1.25)"
+		        						 value={this.props.newTaskEstHrs}
+		        						 onChange={this.props.handleInputChange}/>
+		        		</form>
 	        		</td>
 	        	</tr>
 
-	          {!this.props.tasks.length ? (
+	          {Object.keys(tasks).length === 0 ? (
 	          	<tr>
 	          	 <td><i>No tasks to list.</i></td>
 	          	</tr>
 	          ) : (
-	          	this.props.tasks.map((task, index) =>
-	          	<OneTaskList key={task.id}
-	          							 taskID={task.id}
-	          							 taskName={task.name}
-	          							 taskEstHrs={task.estHrs}
-	          							 taskCompleted={task.completed}
-	          							 toggleEditing={this.props.toggleEditing}
-	          							 editedID={this.props.editedID}
-	          							 updateTask={this.props.updateTask}
-	          							 toggleCompleted={this.props.toggleCompleted}/>
-	          ))}
+	          	Object.keys(tasks).map(id => (
+		          	<OneTaskList key={tasks[id].id}
+		          							 taskID={tasks[id].id}
+		          							 taskName={tasks[id].name}
+		          							 taskEstHrs={tasks[id].estHrs}
+		          							 taskCompleted={tasks[id].completed}
+		          							 toggleEditing={toggleEditing}
+		          							 editedID={editedID}
+		          							 updateTask={updateTask}
+		          							 deleteTask={deleteTask}
+		          							 toggleCompleted={toggleCompleted}/>
+		          	)
+	          	)
+	          )}
 
 	        </tbody>
 	      </Table>

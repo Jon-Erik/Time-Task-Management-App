@@ -38,15 +38,14 @@ class OneTaskList extends React.Component {
 						<input type="checkbox" 
 								 title="Click to toggle"
 								 defaultChecked={this.props.taskCompleted}
-								 id={this.props.taskID}
+								 name={this.props.taskID}
 								 onChange={this.props.toggleCompleted}/>
 
 						{this.state.show ? (
 							<Link title="Edit"
 								 to="#" 
 								 className="list-action-button" 
-								 onClick={(event) => {this.props.toggleEditing(this.props.taskID); 
-								 											}}>
+								 onClick={(event) => {this.props.toggleEditing(this.props.taskID);}}>
 								<img className="action-icon" src={EditIcon}/>
 							</Link>
 						) : null}
@@ -54,7 +53,9 @@ class OneTaskList extends React.Component {
 						{this.state.show ? (
 							<Link title="Delete" 
 										className="list-action-button"
-										to="#">
+										to="#"
+										name={this.props.taskID}
+										onClick={this.props.deleteTask}>
 								<img className="action-icon" src={DeleteIcon}/>
 							</Link>
 						) : null}
@@ -72,7 +73,7 @@ class OneTaskList extends React.Component {
 						<input type="checkbox" 
 									 title="Click to toggle"
 									 defaultChecked={this.props.taskCompleted}
-									 id={this.props.taskID}
+									 name={this.props.taskID}
 									 onChange={this.props.toggleCompleted}/>						
 
 						{this.state.show ? (
@@ -80,10 +81,8 @@ class OneTaskList extends React.Component {
 									  to="#" 
 									  className="list-action-button" 
 									  onClick={(event) => {this.props.updateTask(this.props.taskID,
-								 																						   this.state.editedTaskName,
-								 																						   this.state.editedTaskEstHrs);
-								 											   this.props.toggleEditing(this.props.taskID); 
-								 											   }}>
+																			     this.state.editedTaskName,
+																			     this.state.editedTaskEstHrs);}}>
 								<img className="action-icon" src={SaveIcon}/>
 							</Link>
 						) : null}
@@ -92,8 +91,7 @@ class OneTaskList extends React.Component {
 							<Link title="Discard changes"
 									 to="#" 
 									 className="list-action-button" 
-									 onClick={(event) => {this.props.toggleEditing(this.props.taskID); 
-									 											}}>
+									 onClick={(event) => {this.props.toggleEditing(this.props.taskID);}}>
 									<img className="action-icon" src={DiscardIcon}/>
 								</Link>
 							) : null}
@@ -104,10 +102,15 @@ class OneTaskList extends React.Component {
 					<td>{this.props.taskName}</td>
 				) : (
 					<td className="edit-mode-td">
-					<Input className="edit-mode-input" 
-								 defaultValue={this.props.taskName}
-								 onChange={this.handleInputChange}
-								 name="editedTaskName"/>
+						<form onSubmit={(event) => {event.preventDefault(); 
+																				this.props.updateTask(this.props.taskID, 
+																					this.state.editedTaskName, 
+																					this.state.editedTaskEstHrs);}}>
+							<Input className="edit-mode-input" 
+										 defaultValue={this.props.taskName}
+										 onChange={this.handleInputChange}
+										 name="editedTaskName"/>
+						</form>
 					</td>
 				)}
 
@@ -115,10 +118,15 @@ class OneTaskList extends React.Component {
 					<td>{this.props.taskEstHrs}</td>
 				) : (
 					<td className="edit-mode-td">
-					<Input className="edit-mode-input" 
-								 defaultValue={this.props.taskEstHrs}
-								 onChange={this.handleInputChange}
-								 name="editedTaskEstHrs"/>
+						<form onSubmit={(event) => {event.preventDefault();
+																				this.props.updateTask(this.props.taskID,
+																					this.state.editedTaskName,
+																					this.state.editedTaskEstHrs)}}>
+							<Input className="edit-mode-input" 
+									 defaultValue={this.props.taskEstHrs}
+									 onChange={this.handleInputChange}
+									 name="editedTaskEstHrs"/>
+						</form>
 					</td>
 				)}
 			</tr>
